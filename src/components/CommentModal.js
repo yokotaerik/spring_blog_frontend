@@ -44,8 +44,13 @@ const CommentModal = ({ isOpen, onClose, onSubmit }) => {
   const [postContent, setPostContent] = useState('');
 
   const handleSubmit = () => {
-    onSubmit(postContent);
-    onClose();
+
+    if(postContent != ''){
+      onSubmit(postContent);
+      setPostContent('')
+      onClose();
+    }
+
   };
 
   return (
@@ -63,8 +68,8 @@ const CommentModal = ({ isOpen, onClose, onSubmit }) => {
         placeholder="Conteúdo do post"
       />
       <div className='flex gap-3'>
-      <button onClick={handleSubmit} className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out">Enviar</button>
-      <button onClick={onClose}  className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out">Cancelar</button>
+      <button onClick={handleSubmit} className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out" >Enviar</button>
+      <button onClick={onClose}  className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out" >Cancelar</button>
       </div>
     </Modal>
   );

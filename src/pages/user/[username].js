@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link"; // Import Link from Next.js
+import Link from "next/link";
 import UserProfile from "@/components/UserProfile";
 import Layout from "@/components/Layout";
 import api from "@/utils/api";
+import { useRouter } from "next/router";
 
-const MePage = () => {
+const UserPage = () => {
+
+  const router = useRouter();
+  const { username } = router.query;
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await api.get("/auth/me");
+        const response = await api.get(`/user/${username}`);
         setUser(response.data);
       } catch (error) {
         console.error("Erro ao obter informações do usuário", error);
@@ -18,11 +23,11 @@ const MePage = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [username]); // Trigger the effect when the username changes
 
   return (
     <Layout>
-      <div className=" max-w-xl w-screen">
+      <div className="max-w-xl w-screen">
         <UserProfile user={user} />
         <ul>
           {user?.posts
@@ -53,4 +58,4 @@ const MePage = () => {
   );
 };
 
-export default MePage;
+export default UserPage;

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Comments = ({ comments }) => {
@@ -5,10 +6,10 @@ const Comments = ({ comments }) => {
     <div className="mt-4">
       <h3 className="text-2xl font-semibold mb-2">Respostas</h3>
       {comments.length > 0 ? (
-        <ul className="list-disc pl-6">
+        <ul className="pl-6">
           {comments.map((comment, index) => (
             <li key={index} className="mt-2">
-              <p className="text-gray-500">{comment.author}</p>
+              <Link href={`/user/${comment.author}`} ><p className="text-gray-500 hover:text-blue-400">{comment.author}</p></Link>
               <p className="text-gray-300">{comment.content}</p>
             </li>
           ))}

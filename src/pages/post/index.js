@@ -56,7 +56,7 @@ const PostsList = () => {
           <h2 className="text-2xl font-bold">O que há de novo ?</h2>
           <button
             onClick={openModal}
-            className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-indigo-500 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out"
+            className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out"
           >
             Lançar a braba
           </button>
@@ -73,17 +73,17 @@ const PostsList = () => {
             .reverse()
             .map((post) => (
               <li className="mb-6" key={post.id}>
-                <div className="p-4 bg-slate-300 shadow-md">
-                    <p className="text-gray-600">{post.author.username}</p>
+                <div className="p-4  bg-gray-800 shadow-md">
+                  <Link href={`user/${post.author.username}`}>  <p className="text-gray-600 hover:text-blue-400">{post.author.username}</p> </Link>
                   <Link href={`/post/${post.id}`}>
                     <h3 className="text-xl font-semibold text-blue-500 mb-2">
                       {post.title}
                     </h3>
-                    <p className="text-gray-800">{post.content}</p>
+                    <p className="text-gray-400">{post.content}</p>
                   </Link>
                   <div className="mt-3 flex gap-4">
-                    <p className="text-gray-800">Likes</p>
-                    <p className="text-gray-800">
+                    <p className="text-gray-400">Likes</p>
+                    <p className="text-gray-400">
                       Respostas {post.comments.length}
                     </p>
                   </div>
