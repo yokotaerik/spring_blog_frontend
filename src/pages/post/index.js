@@ -52,7 +52,7 @@ const PostsList = () => {
   return (
     <Layout>
       <div className="p-4">
-        <div className="flex justify-between p-3 mb-2">
+        <div className="flex justify-between p-3 mb-2 gap-10">
           <h2 className="text-2xl font-bold">O que há de novo ?</h2>
           <button
             onClick={openModal}

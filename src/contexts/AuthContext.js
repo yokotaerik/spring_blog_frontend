@@ -66,12 +66,13 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUp = async ({ email, password, name }) => {
+  const signUp = async ( credentials ) => {
     try {
-      const response = await api.post("/user", {
-        name,
-        email,
-        password,
+      console.log(credentials)
+      const response = await api.post('/auth/register', credentials, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
       });
 
       toast.success("Cadastrado com sucesso");
@@ -79,7 +80,7 @@ const AuthProvider = ({ children }) => {
       Router.push("/");
     } catch (err) {
       toast.error("Erro ao cadastrar");
-      console.log("Erro ao cadastrar", err);
+      console.log("Erro ao cadastrar ", err);
     }
   };
 
