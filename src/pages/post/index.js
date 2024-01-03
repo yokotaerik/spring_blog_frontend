@@ -73,9 +73,9 @@ const PostsList = () => {
             .reverse()
             .map((post) => (
               <li className="mb-6" key={post.id}>
-                <div className="p-4 bg-white shadow-md">
-                  <Link href={`/post/${post.id}`}>
+                <div className="p-4 bg-slate-300 shadow-md">
                     <p className="text-gray-600">{post.author.username}</p>
+                  <Link href={`/post/${post.id}`}>
                     <h3 className="text-xl font-semibold text-blue-500 mb-2">
                       {post.title}
                     </h3>
