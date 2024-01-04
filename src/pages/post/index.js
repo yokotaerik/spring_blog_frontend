@@ -3,11 +3,10 @@ import React, { useState, useEffect } from "react";
 import api from "@/utils/api";
 import Layout from "@/components/Layout";
 import PostModal from "@/components/PostModal";
-
+import { FaHeart, FaComment } from "react-icons/fa"; // Importe os ícones específicos que você precisa
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -18,36 +17,43 @@ const PostsList = () => {
     setIsModalOpen(false);
   };
 
-  const handlePostSubmit = async (postContent, postTitle) => {
+  const fetchPosts = async () => {
+    try {
+      const response = await api.get(`/post/all`);
+      setPosts(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar posts:", error);
+    }
+  };
 
+  const handleLike = async (postId) => {
+    try {
+      await api.post(`like/${postId}`);
+      fetchPosts();
+    } catch (error) {
+      console.error("Erro ao processar o like:", error);
+    }
+  };
+
+  const handlePostSubmit = async (postContent, postTitle) => {
     const data = {
       title: postTitle,
-      content: postContent
+      content: postContent,
+    };
+
+    try {
+      await api.post("/post/create", data);
+      fetchPosts();
+    } catch (e) {
+      console.log(e);
     }
 
-    try{
-      await api.post("/post/create", data)
-    }
-    catch(e) {
-      console.log(e)
-    }
-
-    console.log("Conteúdo do post:", postContent , postTitle);
+    console.log("Conteúdo do post:", postContent, postTitle);
   };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await api.get(`/post/all`);
-        setPosts(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar posts:", error);
-      }
-    };
-
     fetchPosts();
   }, []);
-
 
   return (
     <Layout>
@@ -73,8 +79,12 @@ const PostsList = () => {
             .reverse()
             .map((post) => (
               <li className="mb-6" key={post.id}>
-                <div className="p-4  bg-gray-800 shadow-md">
-                  <Link href={`user/${post.author.username}`}>  <p className="text-gray-600 hover:text-blue-400">{post.author.username}</p> </Link>
+                <div className="p-4 bg-gray-800 shadow-md">
+                  <Link href={`user/${post.author.username}`}>
+                    <p className="text-gray-600 hover:text-blue-400">
+                      {post.author.username}
+                    </p>
+                  </Link>
                   <Link href={`/post/${post.id}`}>
                     <h3 className="text-xl font-semibold text-blue-500 mb-2">
                       {post.title}
@@ -82,9 +92,18 @@ const PostsList = () => {
                     <p className="text-gray-400">{post.content}</p>
                   </Link>
                   <div className="mt-3 flex gap-4">
-                    <p className="text-gray-400">Likes</p>
                     <p className="text-gray-400">
-                      Respostas {post.comments.length}
+                      <Link href={`/post/${post.id}`}>
+                        <FaComment /> {post.comments.length}
+                      </Link>
+                    </p>
+                    <p className="text-gray-400">
+                      <button
+                        className="text-gray-400 cursor-pointer focus:outline-none"
+                        onClick={() => handleLike(post.id)}
+                      >
+                        <FaHeart /> {post.like}
+                      </button>
                     </p>
                   </div>
                 </div>
