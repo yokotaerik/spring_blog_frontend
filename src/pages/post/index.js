@@ -13,7 +13,6 @@ const PostsList = () => {
   
     useEffect(() => {
       if (isAuthenticated) {
-        console.log("Usuário logado:", user);
       } else {
         console.log("Usuário não autenticado");
       }
@@ -90,9 +89,9 @@ const PostsList = () => {
             .map((post) => (
               <li className="mb-6" key={post.id}>
                 <div className="p-4 bg-gray-800 shadow-md">
-                  <Link href={`user/${post.author.username}`}>
+                  <Link href={`user/${post.author}`}>
                     <p className="text-gray-600 hover:text-blue-400">
-                      {post.author.username}
+                      {post.author}
                     </p>
                   </Link>
                   <Link href={`/post/${post.id}`}>
@@ -112,7 +111,7 @@ const PostsList = () => {
                         className={`text-gray-400 cursor-pointer focus:outline-none ${
                           post.likes &&
                           post.likes.some(
-                            (like) => like.username === user.username
+                            (like) => like === user.username
                           )
                             ? "text-red-500"
                             : ""

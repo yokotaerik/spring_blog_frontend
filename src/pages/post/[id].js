@@ -4,10 +4,30 @@ import PostDetails from '../../components/PostDetails';
 import Comments from '../../components/Comments';
 import api from '@/utils/api';
 import CommentModal from '@/components/CommentModal';
+import { useRouter } from 'next/router';
 
-const Post = ({ initialPost }) => {
-  const [post, setPost] = useState(initialPost);
+const Post = ( ) => {
+  const [post, setPost] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+  const { id } = router.query;
+
+  useEffect(() => {
+  
+    const fetchPosts = async () => {
+      try {
+        const response = await api.get(`/post/${id}`);
+        setPost(response.data);
+      } catch (error) {
+        console.error("Erro ao obter", error);
+      }
+    };
+  
+    if (id) {
+      fetchPosts();
+    }
+  }, []);
+  
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -26,14 +46,14 @@ const Post = ({ initialPost }) => {
 
       setPost(updatedPost);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
   return (
     <Layout>
       <div className="p-4 bg-gray-800 max-w-sm w-screen">
-        <PostDetails title={post.title} author={post.author.username} content={post.content} />
+        <PostDetails post={post} />
 
         <button
           onClick={openModal}
@@ -54,24 +74,5 @@ const Post = ({ initialPost }) => {
   );
 };
 
-export async function getServerSideProps({ params }) {
-  try {
-    const response = await api.get(`/post/${params.id}`);
-    const initialPost = await response.data;
-
-    return {
-      props: {
-        initialPost,
-      },
-    };
-  } catch (error) {
-    console.error('Erro ao obter dados do servidor:', error);
-    return {
-      props: {
-        initialPost: null,
-      },
-    };
-  }
-}
 
 export default Post;
