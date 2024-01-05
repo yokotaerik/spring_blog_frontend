@@ -1,13 +1,23 @@
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import api from "@/utils/api";
 import Layout from "@/components/Layout";
 import PostModal from "@/components/PostModal";
 import { FaHeart, FaComment } from "react-icons/fa"; // Importe os ícones específicos que você precisa
+import { AuthContext } from "@/contexts/AuthContext";
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user, isAuthenticated, signOut } = useContext(AuthContext);
+  
+    useEffect(() => {
+      if (isAuthenticated) {
+        console.log("Usuário logado:", user);
+      } else {
+        console.log("Usuário não autenticado");
+      }
+    }, [user, isAuthenticated]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -28,7 +38,7 @@ const PostsList = () => {
 
   const handleLike = async (postId) => {
     try {
-      await api.post(`like/${postId}`);
+      await api.post(`/post/like/${postId}`);
       fetchPosts();
     } catch (error) {
       console.error("Erro ao processar o like:", error);
@@ -99,10 +109,17 @@ const PostsList = () => {
                     </p>
                     <p className="text-gray-400">
                       <button
-                        className="text-gray-400 cursor-pointer focus:outline-none"
+                        className={`text-gray-400 cursor-pointer focus:outline-none ${
+                          post.likes &&
+                          post.likes.some(
+                            (like) => like.username === user.username
+                          )
+                            ? "text-red-500"
+                            : ""
+                        }`}
                         onClick={() => handleLike(post.id)}
                       >
-                        <FaHeart /> {post.like}
+                        <FaHeart /> {post.likes.length}
                       </button>
                     </p>
                   </div>
