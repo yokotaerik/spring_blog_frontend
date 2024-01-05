@@ -4,84 +4,85 @@ import UserProfile from "@/components/UserProfile";
 import Layout from "@/components/Layout";
 import api from "@/utils/api";
 import { useRouter } from "next/router";
+import PostDetails from "@/components/PostDetails";
 
 const UserPage = () => {
-
   const router = useRouter();
   const { username } = router.query;
-  
-  const [page, setPage] = useState('all')
+
+  const [page, setPage] = useState("posts");
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await api.get(`/user/${username}`);
-        setUser(response.data);
-      } catch (error) {
-        console.error("Erro ao obter informações do usuário", error);
-      }
-    };
+  const fetchUserData = async () => {
+    try {
+      const response = await api.get(`/user/${username}`);
+      setUser(response.data);
+    } catch (error) {
+      console.error("Erro ao obter informações do usuário", error);
+    }
+  };
 
+  useEffect(() => {
     fetchUserData();
-  }, [username]); // Trigger the effect when the username changes
+  }, [username]);
 
   return (
     <Layout>
       <div className="max-w-xl w-screen">
         <UserProfile user={user} />
-        <div className="flex">
-          <button> Posts </button>
-          <button> Likes </button>
+        <div className="flex gap-2 my-5">
+          <button
+            className={`${
+              page === "posts" ? "bg-blue-800 text-white" : "bg-blue-500"
+            } py-2 px-4 rounded-md w-1/4`}
+            onClick={() => setPage("posts")}
+          >
+            Posts
+          </button>
+          <button
+            className={`${
+              page === "likes" ? "bg-blue-800 text-white" : "bg-blue-500"
+            } py-2 px-4 rounded-md  w-1/4`}
+            onClick={() => setPage("likes")}
+          >
+            Likes
+          </button>
         </div>
-        <ul>
-        {user?.likes
-            ?.slice()
-            .reverse()
-            .map((post) => (
-              <li className="mb-6" key={post.id}>
-                <div className="p-4  bg-gray-800 shadow-md">
-                  <Link href={`/post/${post.id}`}>
-                    <p className="text-gray-600">{post.author}</p>
-                    <h3 className="text-xl font-semibold text-blue-500 mb-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-400">{post.content}</p>
-                  </Link>
-                  <div className="mt-3 flex gap-4">
-                    <p className="text-gray-400">Likes</p>
-                    <p className="text-gray-400">
-                      Respostas {post.comments.length}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            ))}
-        </ul>
-        <ul>
-          {user?.posts
-            ?.slice()
-            .reverse()
-            .map((post) => (
-              <li className="mb-6" key={post.id}>
-                <div className="p-4  bg-gray-800 shadow-md">
-                  <Link href={`/post/${post.id}`}>
-                    <p className="text-gray-600">{post.author}</p>
-                    <h3 className="text-xl font-semibold text-blue-500 mb-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-400">{post.content}</p>
-                  </Link>
-                  <div className="mt-3 flex gap-4">
-                    <p className="text-gray-400">Likes</p>
-                    <p className="text-gray-400">
-                      Respostas {post.comments.length}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            ))}
-        </ul>
+        {page === "posts" ? (
+          <ul>
+            {user?.posts && user.posts.length > 0 ? (
+              user.posts
+                .slice()
+                .reverse()
+                .map((post) => (
+                  <PostDetails
+                    post={post}
+                    user={user}
+                    onLikeUpdated={fetchUserData}
+                  />
+                ))
+            ) : (
+              <p className="text-gray-500 mt-4">Nada por aqui...</p>
+            )}
+          </ul>
+        ) : (
+          <ul>
+            {user?.likes && user.likes.length > 0 ? (
+              user.likes
+                .slice()
+                .reverse()
+                .map((post) => (
+                  <PostDetails
+                    post={post}
+                    user={user}
+                    onLikeUpdated={fetchUserData}
+                  />
+                ))
+            ) : (
+              <p className="text-gray-500 mt-4">Não curtiu nada...</p>
+            )}
+          </ul>
+        )}
       </div>
     </Layout>
   );

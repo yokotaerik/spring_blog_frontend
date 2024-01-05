@@ -5,18 +5,19 @@ import Layout from "@/components/Layout";
 import PostModal from "@/components/PostModal";
 import { FaHeart, FaComment } from "react-icons/fa"; // Importe os ícones específicos que você precisa
 import { AuthContext } from "@/contexts/AuthContext";
+import PostDetails from "@/components/PostDetails";
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, isAuthenticated, signOut } = useContext(AuthContext);
-  
-    useEffect(() => {
-      if (isAuthenticated) {
-      } else {
-        console.log("Usuário não autenticado");
-      }
-    }, [user, isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+    } else {
+      console.log("Usuário não autenticado");
+    }
+  }, [user, isAuthenticated]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -32,15 +33,6 @@ const PostsList = () => {
       setPosts(response.data);
     } catch (error) {
       console.error("Erro ao buscar posts:", error);
-    }
-  };
-
-  const handleLike = async (postId) => {
-    try {
-      await api.post(`/post/like/${postId}`);
-      fetchPosts();
-    } catch (error) {
-      console.error("Erro ao processar o like:", error);
     }
   };
 
@@ -87,43 +79,11 @@ const PostsList = () => {
             .slice()
             .reverse()
             .map((post) => (
-              <li className="mb-6" key={post.id}>
-                <div className="p-4 bg-gray-800 shadow-md">
-                  <Link href={`user/${post.author}`}>
-                    <p className="text-gray-600 hover:text-blue-400">
-                      {post.author}
-                    </p>
-                  </Link>
-                  <Link href={`/post/${post.id}`}>
-                    <h3 className="text-xl font-semibold text-blue-500 mb-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-400">{post.content}</p>
-                  </Link>
-                  <div className="mt-3 flex gap-4">
-                    <p className="text-gray-400">
-                      <Link href={`/post/${post.id}`}>
-                        <FaComment /> {post.comments.length}
-                      </Link>
-                    </p>
-                    <p className="text-gray-400">
-                      <button
-                        className={`text-gray-400 cursor-pointer focus:outline-none ${
-                          post.likes &&
-                          post.likes.some(
-                            (like) => like === user.username
-                          )
-                            ? "text-red-500"
-                            : ""
-                        }`}
-                        onClick={() => handleLike(post.id)}
-                      >
-                        <FaHeart /> {post.likes.length}
-                      </button>
-                    </p>
-                  </div>
-                </div>
-              </li>
+              <PostDetails
+                post={post}
+                user={user}
+                onLikeUpdated={fetchPosts}
+              />
             ))}
         </ul>
       </div>
