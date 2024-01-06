@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import Link from "next/link"; // Import Link from Next.js
-import UserProfile from "@/components/UserProfile";
-import Layout from "@/components/Layout";
+import Link from "next/link";
+import React, { useState, useEffect, useContext } from "react";
 import api from "@/utils/api";
-import { FaComment, FaHeart } from "react-icons/fa";
+import Layout from "@/components/Layout";
+import PostModal from "@/components/PostModal";
+import { FaHeart, FaComment } from "react-icons/fa";
 import PostDetails from "@/components/PostDetails";
+import UserProfile from "@/components/UserProfile";
 
 const MePage = () => {
   const [user, setUser] = useState(null);
@@ -26,25 +27,24 @@ const MePage = () => {
   return (
     <Layout>
       <div className="max-w-xl w-screen">
-        <p> Seu perfil:</p>
         <UserProfile user={user} loggedUser={user} follow={fetchUserData}/>
-        <div className="flex gap-2 my-5">
-          <button
-            className={`${
-              page === "posts" ? "bg-blue-800 text-white" : "bg-blue-500"
-            } py-2 px-4 rounded-md w-1/4`}
-            onClick={() => setPage("posts")}
-          >
-            Posts
-          </button>
-          <button
-            className={`${
-              page === "likes" ? "bg-blue-800 text-white" : "bg-blue-500"
-            } py-2 px-4 rounded-md  w-1/4`}
-            onClick={() => setPage("likes")}
-          >
-            Likes
-          </button>
+        <div className="flex flex-col gap-2 mt-5">
+          <div className="flex-1 bg-blue-500 h-2"></div> {/* Barra contínua */}
+          <div className="flex">
+            <MePageButton
+              onClick={() => setPage("posts")}
+              selected={page === "posts"}
+            >
+              Posts
+            </MePageButton>
+
+            <MePageButton
+              onClick={() => setPage("likes")}
+              selected={page === "likes"}
+            >
+              Likes
+            </MePageButton>
+          </div>
         </div>
         {page === "posts" ? (
           <ul>
@@ -85,5 +85,16 @@ const MePage = () => {
     </Layout>
   );
 };
+
+const MePageButton = ({ onClick, selected, children }) => (
+  <button
+    onClick={onClick}
+    className={`py-2 px-4 w-full ${
+      selected ? "bg-blue-600 text-white" : "bg-blue-500 text-gray-100"
+    } hover:bg-blue-700 focus:outline-none focus:bg-blue-700 transition-all duration-300 ease-in-out`}
+  >
+    {children}
+  </button>
+);
 
 export default MePage;

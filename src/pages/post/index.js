@@ -3,11 +3,12 @@ import React, { useState, useEffect, useContext } from "react";
 import api from "@/utils/api";
 import Layout from "@/components/Layout";
 import PostModal from "@/components/PostModal";
-import { FaHeart, FaComment } from "react-icons/fa"; // Importe os ícones específicos que você precisa
+import { FaHeart, FaComment } from "react-icons/fa";
 import { AuthContext } from "@/contexts/AuthContext";
 import PostDetails from "@/components/PostDetails";
 
 const PostsList = () => {
+  const [selectedOption, setSelectedOption] = useState("all");
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, isAuthenticated, signOut } = useContext(AuthContext);
@@ -36,6 +37,15 @@ const PostsList = () => {
     }
   };
 
+  const fetchFeed = async () => {
+    try {
+      const response = await api.get(`/user/feed`);
+      setPosts(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar feed:", error);
+    }
+  };
+
   const handlePostSubmit = async (postContent, postTitle) => {
     const data = {
       title: postTitle,
@@ -58,15 +68,38 @@ const PostsList = () => {
 
   return (
     <Layout>
-      <div className="p-4">
-        <div className="flex justify-between p-3 mb-2 gap-10">
-          <h2 className="text-2xl font-bold">O que há de novo ?</h2>
+      <div className=" max-w-xl w-full">
+        <div className="mb-6 flex justify-between p-4">
+          <h2 className="text-3xl font-bold">O que há de novo?</h2>
           <button
             onClick={openModal}
-            className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out"
+            className="bg-gray-500 text-white py-2 px-4 hover:bg-blue-800 focus:outline-none focus:bg-blue-800 transition-all duration-300 ease-in-out"
           >
-            Lançar a braba
+            {" "}
+            Postar
           </button>
+        </div>
+
+        <div className=" flex ">
+          <OptionButton
+            onClick={() => {
+              fetchPosts();
+              setSelectedOption("all");
+            }}
+            selected={selectedOption === "all"}
+          >
+            Recentes
+          </OptionButton>
+
+          <OptionButton
+            onClick={() => {
+              fetchFeed();
+              setSelectedOption("following");
+            }}
+            selected={selectedOption === "following"}
+          >
+            Para você
+          </OptionButton>
         </div>
 
         <PostModal
@@ -74,21 +107,31 @@ const PostsList = () => {
           onClose={closeModal}
           onSubmit={handlePostSubmit}
         />
-        <ul>
-          {posts
-            .slice()
-            .reverse()
-            .map((post) => (
-              <PostDetails
-                post={post}
-                user={user}
-                onLikeUpdated={fetchPosts}
-              />
-            ))}
+
+        <ul className="">
+          {posts.map((post) => (
+            <PostDetails
+              key={post.id}
+              post={post}
+              user={user}
+              onLikeUpdated={fetchPosts}
+            />
+          ))}
         </ul>
       </div>
     </Layout>
   );
 };
+
+const OptionButton = ({ onClick, selected, children }) => (
+  <button
+    onClick={onClick}
+    className={`w-full py-2 ${
+      selected ? "bg-blue-600 text-white" : "bg-blue-500 text-gray-100"
+    } hover:bg-blue-700 focus:outline-none focus:bg-blue-700 transition-all duration-300 ease-in-out`}
+  >
+    {children}
+  </button>
+);
 
 export default PostsList;

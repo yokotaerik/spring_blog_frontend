@@ -2,10 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import Layout from "../../components/Layout";
 import PostDetails from "../../components/PostDetails";
 import Comments from "../../components/Comments";
-import api from "@/utils/api";
 import CommentModal from "@/components/CommentModal";
+import api from "@/utils/api";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/AuthContext";
+import CustomBlueButtom from "@/components/CustomBlueButton";
 
 const Post = () => {
   const [post, setPost] = useState({});
@@ -16,16 +17,16 @@ const Post = () => {
 
   useEffect(() => {
     if (id) {
-      fetchPosts();
+      fetchPost();
     }
-  }, []);
+  }, [id]);
 
-  const fetchPosts = async () => {
+  const fetchPost = async () => {
     try {
       const response = await api.get(`/post/${id}`);
       setPost(response.data);
     } catch (error) {
-      console.error("Erro ao obter", error);
+      console.error("Erro ao obter o post", error);
     }
   };
 
@@ -40,27 +41,23 @@ const Post = () => {
   const handleAnswer = async (postContent) => {
     try {
       await api.post(`/comment/add/${post.id}`, { content: postContent });
-
-      const response = await api.get(`/post/${post.id}`);
-      const updatedPost = response.data;
-
-      setPost(updatedPost);
-    } catch (e) {
-      console.error(e);
+      fetchPost(); // Atualiza o post após adicionar um comentário
+    } catch (error) {
+      console.error("Erro ao adicionar comentário", error);
     }
   };
 
   return (
     <Layout>
-      <div className="p-4 bg-gray-800 max-w-sm w-screen">
-        <PostDetails post={post} user={user} onLikeUpdated={fetchPosts} />
+      <div className="max-w-xl w-full mx-auto p-4">
+        <div className="">
+          <PostDetails post={post} user={user} onLikeUpdated={fetchPost} />
+        </div>
 
-        <button
-          onClick={openModal}
-          className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out my-4"
-        >
-          Comente!
-        </button>
+        <div className="w-full flex justify-between items-center bg-gray-700">  
+        <label className="p-2"> Respostas </label>
+        <CustomBlueButtom onClick={openModal}>Comente!</CustomBlueButtom>
+        </div>
 
         <CommentModal
           isOpen={isModalOpen}
