@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import UserProfile from "@/components/UserProfile";
 import Layout from "@/components/Layout";
 import api from "@/utils/api";
 import { useRouter } from "next/router";
 import PostDetails from "@/components/PostDetails";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const UserPage = () => {
   const router = useRouter();
   const { username } = router.query;
+  const { user } = useContext(AuthContext);
 
   const [page, setPage] = useState("posts");
-  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   const fetchUserData = async () => {
     try {
       const response = await api.get(`/user/${username}`);
-      setUser(response.data);
+      setUserData(response.data);
     } catch (error) {
       console.error("Erro ao obter informações do usuário", error);
     }
@@ -29,7 +31,7 @@ const UserPage = () => {
   return (
     <Layout>
       <div className="max-w-xl w-screen">
-        <UserProfile user={user} />
+        <UserProfile user={userData} loggedUser={user} follow={fetchUserData} />
         <div className="flex gap-2 my-5">
           <button
             className={`${
@@ -50,8 +52,8 @@ const UserPage = () => {
         </div>
         {page === "posts" ? (
           <ul>
-            {user?.posts && user.posts.length > 0 ? (
-              user.posts
+            {userData?.posts && userData.posts.length > 0 ? (
+              userData.posts
                 .slice()
                 .reverse()
                 .map((post) => (
@@ -67,8 +69,8 @@ const UserPage = () => {
           </ul>
         ) : (
           <ul>
-            {user?.likes && user.likes.length > 0 ? (
-              user.likes
+            {userData?.likes && userData.likes.length > 0 ? (
+              userData.likes
                 .slice()
                 .reverse()
                 .map((post) => (

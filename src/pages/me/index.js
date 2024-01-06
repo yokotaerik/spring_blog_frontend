@@ -27,7 +27,7 @@ const MePage = () => {
     <Layout>
       <div className="max-w-xl w-screen">
         <p> Seu perfil:</p>
-        <UserProfile user={user} />
+        <UserProfile user={user} loggedUser={user} follow={fetchUserData}/>
         <div className="flex gap-2 my-5">
           <button
             className={`${

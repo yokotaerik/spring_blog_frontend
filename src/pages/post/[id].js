@@ -1,31 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Layout from "../../components/Layout";
 import PostDetails from "../../components/PostDetails";
 import Comments from "../../components/Comments";
 import api from "@/utils/api";
 import CommentModal from "@/components/CommentModal";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const Post = () => {
   const [post, setPost] = useState({});
+  const { user } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await api.get(`/post/${id}`);
-        setPost(response.data);
-      } catch (error) {
-        console.error("Erro ao obter", error);
-      }
-    };
-
     if (id) {
       fetchPosts();
     }
   }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await api.get(`/post/${id}`);
+      setPost(response.data);
+    } catch (error) {
+      console.error("Erro ao obter", error);
+    }
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
