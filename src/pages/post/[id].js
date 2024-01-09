@@ -6,7 +6,7 @@ import CommentModal from "@/components/CommentModal";
 import api from "@/utils/api";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/AuthContext";
-import CustomBlueButtom from "@/components/CustomBlueButton";
+import CustomBlueButton from "@/components/CustomBlueButton";
 
 const Post = () => {
   const [post, setPost] = useState({});
@@ -41,7 +41,7 @@ const Post = () => {
   const handleAnswer = async (postContent) => {
     try {
       await api.post(`/comment/add/${post.id}`, { content: postContent });
-      fetchPost(); // Atualiza o post após adicionar um comentário
+      fetchPost();
     } catch (error) {
       console.error("Erro ao adicionar comentário", error);
     }
@@ -54,9 +54,9 @@ const Post = () => {
           <PostDetails post={post} user={user} onLikeUpdated={fetchPost} />
         </div>
 
-        <div className="w-full flex justify-between items-center bg-gray-700">  
-        <label className="p-2"> Respostas </label>
-        <CustomBlueButtom onClick={openModal}>Comente!</CustomBlueButtom>
+        <div className="w-full flex justify-between items-center bg-gray-700">
+          <label className="p-2"> Respostas </label>
+          <CustomBlueButton onClick={openModal}>Comente!</CustomBlueButton>
         </div>
 
         <CommentModal
@@ -65,7 +65,11 @@ const Post = () => {
           onSubmit={handleAnswer}
         />
 
-        <Comments comments={post.comments} />
+        <Comments
+          comments={post.comments}
+          user={user}
+          onLikeUpdated={fetchPost}
+        />
       </div>
     </Layout>
   );

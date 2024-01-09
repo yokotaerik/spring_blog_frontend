@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import Link from 'next/link';
-import CustomBlueButtom from './CustomBlueButton';
+import CustomBlueButton from './CustomBlueButton';
 
 const RegisterForm = () => {
   const { signUp } = useContext(AuthContext);
@@ -41,13 +41,13 @@ const RegisterForm = () => {
             onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           />
         </label>
-        <CustomBlueButtom
+        <CustomBlueButton
           type="button"
           className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-800 focus:outline-none focus:bg-blue-800 transition-all duration-300 ease-in-out"
           onClick={handleRegister}
         >
           Registrar
-        </CustomBlueButtom >
+        </CustomBlueButton >
         <p className="text-white mt-2">
           Já tem uma conta?{' '}
           <Link href="/login">

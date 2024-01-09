@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CustomBlueButtom = ({ onClick, children }) => (
+const CustomBlueButton = ({ onClick, children }) => (
   <button
     type="button"
     onClick={onClick}
@@ -10,4 +10,4 @@ const CustomBlueButtom = ({ onClick, children }) => (
   </button>
 );
 
-export default CustomBlueButtom;
+export default CustomBlueButton;

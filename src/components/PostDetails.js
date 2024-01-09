@@ -1,12 +1,12 @@
 import api from "@/utils/api";
 import Link from "next/link";
 import React from "react";
-import { Heart, MessageSquare } from "react-feather"; // Ícones da biblioteca Feather
+import { Heart, MessageSquare } from "react-feather";
 
 const PostDetails = ({ post, user, onLikeUpdated }) => {
-  const handleLike = async (postId) => {
+  const handleLike = async (id) => {
     try {
-      await api.post(`/post/like/${postId}`);
+      await api.post(`/like/${id}`);
       if (onLikeUpdated) {
         onLikeUpdated();
       }
@@ -19,7 +19,7 @@ const PostDetails = ({ post, user, onLikeUpdated }) => {
     <div>
       {post ? (
         <div className="p-4 bg-gray-800 shadow-md">
-          <Link href={`user/${post.author}`}>
+          <Link href={`/user/${post.author}`}>
             <p className="text-gray-600 hover:text-blue-400">{post.author}</p>
           </Link>
           <Link href={`/post/${post.id}`}>
@@ -31,7 +31,10 @@ const PostDetails = ({ post, user, onLikeUpdated }) => {
           <div className="mt-3 flex gap-4">
             <p className="text-gray-400">
               <Link href={`/post/${post.id}`}>
-                <MessageSquare /> {post.comments ? post.comments.length : 0}
+                <div className="flex gap-2">
+                  <MessageSquare />
+                  {post.comments ? post.comments.length : 0}
+                </div>
               </Link>
             </p>
             <p className="text-gray-400">
@@ -44,7 +47,10 @@ const PostDetails = ({ post, user, onLikeUpdated }) => {
                 }`}
                 onClick={() => handleLike(post.id)}
               >
-                <Heart /> {post.likes ? post.likes.length : 0}
+                <div className="flex gap-2">
+                  <Heart />
+                  {post.likes ? post.likes.length : 0}
+                </div>
               </button>
             </p>
           </div>

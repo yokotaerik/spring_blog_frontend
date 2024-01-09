@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import CustomBlueButton from "./CustomBlueButton";
 
+
 const customStyles = {
   content: {
     top: "50%",
@@ -47,14 +48,13 @@ const customStyles = {
   },
 };
 
-const PostModal = ({ isOpen, onClose, onSubmit }) => {
-  const [postContent, setPostContent] = useState("");
-  const [postTitle, setPostTitle] = useState("");
+
+const AboutMeModal = ({ isOpen, onClose, onUpdateAboutMe }) => {
+  const [aboutMeContent, setAboutMeContent] = useState("");
 
   const handleSubmit = () => {
-    onSubmit(postContent, postTitle);
-    setPostContent("");
-    setPostTitle("");
+    onUpdateAboutMe(aboutMeContent);
+    setAboutMeContent("");
     onClose();
   };
 
@@ -62,39 +62,22 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      contentLabel="Enviar Post"
+      contentLabel="Atualizar Sobre Mim"
       style={customStyles}
     >
-      <h2 style={customStyles.h2}>Lança a braba!</h2>
-      <input
-        type="text"
-        value={postTitle}
-        onChange={(e) => setPostTitle(e.target.value)}
-        style={customStyles.input}
-        placeholder="Título"
-      />
+      <h2 style={customStyles.h2}>Atualizar Sobre Mim</h2>
       <textarea
-        value={postContent}
-        onChange={(e) => setPostContent(e.target.value)}
+        value={aboutMeContent}
+        onChange={(e) => setAboutMeContent(e.target.value)}
         style={customStyles.textarea}
-        placeholder="Conteúdo do post"
+        placeholder="Conte sobre você"
       />
       <div style={{ display: "flex", gap: "10px" }}>
-        <CustomBlueButton
-          onClick={handleSubmit}
-          className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out"
-        >
-          Enviar
-        </CustomBlueButton>
-        <CustomBlueButton
-          onClick={onClose}
-          className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out"
-        >
-          Cancelar
-        </CustomBlueButton>
+        <CustomBlueButton onClick={handleSubmit}>Atualizar</CustomBlueButton>
+        <CustomBlueButton onClick={onClose}>Cancelar</CustomBlueButton>
       </div>
     </Modal>
   );
 };
 
-export default PostModal;
+export default AboutMeModal;

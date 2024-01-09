@@ -2,10 +2,9 @@ import Link from "next/link";
 import React, { useState, useEffect, useContext } from "react";
 import api from "@/utils/api";
 import Layout from "@/components/Layout";
-import PostModal from "@/components/PostModal";
-import { FaHeart, FaComment } from "react-icons/fa";
 import PostDetails from "@/components/PostDetails";
 import UserProfile from "@/components/UserProfile";
+import CustomBlueButton from "@/components/CustomBlueButton";
 
 const MePage = () => {
   const [user, setUser] = useState(null);
@@ -27,9 +26,9 @@ const MePage = () => {
   return (
     <Layout>
       <div className="max-w-xl w-screen">
-        <UserProfile user={user} loggedUser={user} follow={fetchUserData}/>
+        <UserProfile user={user} loggedUser={user} sendRequest={fetchUserData}/>
         <div className="flex flex-col gap-2 mt-5">
-          <div className="flex-1 bg-blue-500 h-2"></div> {/* Barra contínua */}
+          <div className="flex-1 bg-blue-500 h-2"></div>
           <div className="flex">
             <MePageButton
               onClick={() => setPage("posts")}

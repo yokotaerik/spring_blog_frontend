@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '@/utils/api';
 import Link from 'next/link';
-import CustomBlueButtom from './CustomBlueButton';
+import CustomBlueButton from './CustomBlueButton';
 
 const LoginForm = () => {
   const { signIn } = useContext(AuthContext);
@@ -35,13 +35,13 @@ const LoginForm = () => {
           />
         </label>
 
-        <CustomBlueButtom
+        <CustomBlueButton
           type="button"
           className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-800 focus:outline-none focus:bg-blue-800 transition-all duration-300 ease-in-out"
           onClick={handleLogin}
         >
           Entrar
-        </CustomBlueButtom>
+        </CustomBlueButton>
 
           <p className='mt-5'> Não possui uma conta? </p>
         <Link href="/register">

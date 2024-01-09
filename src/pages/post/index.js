@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from "react";
 import api from "@/utils/api";
 import Layout from "@/components/Layout";
 import PostModal from "@/components/PostModal";
-import { FaHeart, FaComment } from "react-icons/fa";
 import { AuthContext } from "@/contexts/AuthContext";
 import PostDetails from "@/components/PostDetails";
 

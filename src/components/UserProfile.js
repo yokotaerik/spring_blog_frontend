@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import api from "@/utils/api";
+import CustomBlueButton from "./CustomBlueButton";
+import AboutMeModal from "./AboutMeModal";
 
-const UserProfile = ({ user, loggedUser, follow }) => {
+const UserProfile = ({ user, loggedUser, sendRequest }) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handleUpdateAboutMe = async (content) => {
+    try {
+      await api.patch("/user/about", { about: content });
+      sendRequest();
+    } catch (error) {
+      console.error("Error updating about me:", error);
+    }
+  };
+
   const handleFollow = async () => {
     if (user.username === loggedUser.username) {
       return;
@@ -9,7 +30,7 @@ const UserProfile = ({ user, loggedUser, follow }) => {
 
     try {
       await api.post(`/user/follow/${user.username}`);
-      follow();
+      sendRequest();
     } catch (e) {
       console.error("Erro ao seguir", e);
     }
@@ -19,7 +40,19 @@ const UserProfile = ({ user, loggedUser, follow }) => {
     <div className="pt-4 px-4 bg-gray-800 shadow-md">
       {user ? (
         <>
-          <h2 className="text-3xl font-bold text-white mb-4">{user.username}</h2>
+        <div className="flex justify-between">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            {user.username}
+            
+          </h2>
+          {user.username === loggedUser.username ? (
+            <div className="">
+              <CustomBlueButton onClick={openModal}>
+                Atualizar sobre mim
+              </CustomBlueButton>
+            </div>
+          ) : null}
+        </div>
           <div className="mb-4">
             <label className="block text-gray-400 text-sm mb-2">Sobre:</label>
             <p className="text-gray-300">{user.about}</p>
@@ -48,6 +81,11 @@ const UserProfile = ({ user, loggedUser, follow }) => {
               </div>
             </div>
           </div>
+          <AboutMeModal
+            isOpen={showModal}
+            onClose={closeModal}
+            onUpdateAboutMe={handleUpdateAboutMe}
+          />
         </>
       ) : (
         <p className="text-gray-300">Carregando informações do usuário...</p>
@@ -55,5 +93,7 @@ const UserProfile = ({ user, loggedUser, follow }) => {
     </div>
   );
 };
+
+
 
 export default UserProfile;
