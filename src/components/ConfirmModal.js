@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import CustomBlueButton from "./CustomBlueButton";
-import Link from "next/link";
 
 const customStyles = {
   content: {
@@ -21,7 +20,7 @@ const customStyles = {
     flexDirection: "column", // Ajuste para coluna
     alignItems: "center", // Alinhar itens ao centro
     width: "60%",
-    maxWidth: "600px",
+    maxWidth: "300px",
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Fundo escuro semi-transparente
@@ -32,29 +31,25 @@ const customStyles = {
   },
 };
 
-const ListModal = ({ isOpen, onClose, list, title }) => {
+const ConfirmModal = ({ isOpen, onClose, title, confirmDelete }) => {
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      contentLabel="Enviar Post"
       style={customStyles}
     >
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-between items-center w-full flex-col mb-5">
         <h2 style={customStyles.h2}>{title}</h2>
-        <CustomBlueButton onClick={onClose}>X</CustomBlueButton>
+        <p className="font-black"> ESTA É UMA AÇÂO PERMANENTE </p>
       </div>
-        <ul className="list-none w-full mt-3">
-          {list != null ? list.map((user, index) => (
-            <li key={index} className="bg-slate-700 p-2 m-[1px] shadow-md flex w-full">
-              <Link href={`/user/${user}`}>
-                <label className="text-white hover:underline">{user}</label>
-              </Link>
-            </li>
-          )) : null }
-        </ul>
+      <div className="flex gap-5">
+        <button 
+        className="bg-red-500 text-white py-2 px-4 hover:bg-red-800 focus:outline-none focus:bg-red-800 transition-all duration-300 ease-in-out"
+        onClick={confirmDelete}> Deletar </button>
+        <CustomBlueButton onClick={onClose}>Cancelar</CustomBlueButton>
+      </div>
     </Modal>
   );
 };
 
-export default ListModal;
+export default ConfirmModal;

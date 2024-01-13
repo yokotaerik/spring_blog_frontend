@@ -11,11 +11,11 @@ const UserProfile = ({ user, loggedUser, sendRequest }) => {
 
   const closeFollowersModal = () => {
     setIsFollowersModalOpen(false);
-  }
+  };
 
   const closeFollowingModal = () => {
     setIsFollowingModalOpen(false);
-  }
+  };
 
   const openModal = () => {
     setShowModal(true);

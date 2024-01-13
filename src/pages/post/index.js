@@ -11,7 +11,7 @@ const PostsList = () => {
   const [selectedOption, setSelectedOption] = useState("all");
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user, isAuthenticated, signOut } = useContext(AuthContext);
+  const { user, isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     if (isAuthenticated) {
