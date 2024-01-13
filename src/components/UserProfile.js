@@ -2,9 +2,20 @@ import React, { useState } from "react";
 import api from "@/utils/api";
 import CustomBlueButton from "./CustomBlueButton";
 import AboutMeModal from "./AboutMeModal";
+import ListModal from "./ListModal";
 
 const UserProfile = ({ user, loggedUser, sendRequest }) => {
   const [showModal, setShowModal] = useState(false);
+  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+  const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
+
+  const closeFollowersModal = () => {
+    setIsFollowersModalOpen(false);
+  }
+
+  const closeFollowingModal = () => {
+    setIsFollowingModalOpen(false);
+  }
 
   const openModal = () => {
     setShowModal(true);
@@ -40,19 +51,18 @@ const UserProfile = ({ user, loggedUser, sendRequest }) => {
     <div className="pt-4 px-4 bg-gray-800 shadow-md">
       {user ? (
         <>
-        <div className="flex justify-between">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            {user.username}
-            
-          </h2>
-          {user.username === loggedUser.username ? (
-            <div className="">
-              <CustomBlueButton onClick={openModal}>
-                Atualizar sobre mim
-              </CustomBlueButton>
-            </div>
-          ) : null}
-        </div>
+          <div className="flex justify-between">
+            <h2 className="text-3xl font-bold text-white mb-4">
+              {user.username}
+            </h2>
+            {user.username === loggedUser.username ? (
+              <div className="">
+                <CustomBlueButton onClick={openModal}>
+                  Atualizar sobre mim
+                </CustomBlueButton>
+              </div>
+            ) : null}
+          </div>
           <div className="mb-4">
             <label className="block text-gray-400 text-sm mb-2">Sobre:</label>
             <p className="text-gray-300">{user.about}</p>
@@ -73,12 +83,30 @@ const UserProfile = ({ user, loggedUser, sendRequest }) => {
                 : "Seguir"}
             </button>
             <div className="flex gap-2">
-              <div className="bg-gray-700 p-2 text-white text-center">
-                <p>Seguidores: {user.followers ? user.followers.length : 0}</p>
-              </div>
-              <div className="bg-gray-700 p-2 text-white text-center">
-                <p>Seguindo: {user.following ? user.following.length : 0}</p>
-              </div>
+              <button onClick={() => setIsFollowersModalOpen(true)}>
+                <div className="bg-gray-700 p-2 text-white text-center">
+                  <p>
+                    Seguidores: {user.followers ? user.followers.length : 0}
+                  </p>
+                </div>
+              </button>
+              <ListModal
+                title={"Seguidores"}
+                list={user.followers}
+                isOpen={isFollowersModalOpen}
+                onClose={closeFollowersModal}
+              />
+              <button onClick={() => setIsFollowingModalOpen(true)}>
+                <div className="bg-gray-700 p-2 text-white text-center">
+                  <p>Seguindo: {user.following ? user.following.length : 0}</p>
+                </div>
+              </button>
+              <ListModal
+                title={"Seguindo"}
+                list={user.following}
+                isOpen={isFollowingModalOpen}
+                onClose={closeFollowingModal}
+              />
             </div>
           </div>
           <AboutMeModal
@@ -93,7 +121,5 @@ const UserProfile = ({ user, loggedUser, sendRequest }) => {
     </div>
   );
 };
-
-
 
 export default UserProfile;

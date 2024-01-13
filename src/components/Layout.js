@@ -59,7 +59,7 @@ const Layout = ({ children }) => {
                             href={`/user/${user}`}
                             onClick={() => setSearchResult([])}
                           >
-                            <label className="text-blue-500 hover:underline">
+                            <label className="text-white hover:underline">
                               {user}
                             </label>
                           </Link>

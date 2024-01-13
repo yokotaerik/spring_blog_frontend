@@ -5,6 +5,7 @@ import Layout from "@/components/Layout";
 import PostModal from "@/components/PostModal";
 import { AuthContext } from "@/contexts/AuthContext";
 import PostDetails from "@/components/PostDetails";
+import CustomBlueButton from "@/components/CustomBlueButton";
 
 const PostsList = () => {
   const [selectedOption, setSelectedOption] = useState("all");
@@ -70,13 +71,7 @@ const PostsList = () => {
       <div className=" max-w-xl w-full">
         <div className="mb-6 flex justify-between p-4">
           <h2 className="text-3xl font-bold">O que há de novo?</h2>
-          <button
-            onClick={openModal}
-            className="bg-gray-500 text-white py-2 px-4 hover:bg-blue-800 focus:outline-none focus:bg-blue-800 transition-all duration-300 ease-in-out"
-          >
-            {" "}
-            Postar
-          </button>
+          <CustomBlueButton onClick={openModal}> Postar</CustomBlueButton>
         </div>
 
         <div className=" flex ">

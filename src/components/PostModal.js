@@ -82,13 +82,13 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
       <div style={{ display: "flex", gap: "10px" }}>
         <CustomBlueButton
           onClick={handleSubmit}
-          className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out"
+          className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 shadow-md transition-all duration-300 ease-in-out"
         >
           Enviar
         </CustomBlueButton>
         <CustomBlueButton
           onClick={onClose}
-          className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out"
+          className="bg-gradient-to-r from-blue-500 to-sky-700 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-4 shadow-md transition-all duration-300 ease-in-out"
         >
           Cancelar
         </CustomBlueButton>
