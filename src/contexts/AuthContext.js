@@ -2,11 +2,14 @@ import { createContext, useEffect, useState } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import { push } from "next/router";
 import { default as api } from "@/utils/api";
-import { toast } from "react-toastify";
+import { useSnackbar } from "notistack";
+import { toast } from 'react-toastify';
+
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
+  const { enqueueSnackbar  } = useSnackbar();
   const [user, setUser] = useState();
   const isAuthenticated = !!user;
 
@@ -50,12 +53,12 @@ const AuthProvider = ({ children }) => {
 
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      toast.success("Logado com sucesso");
+      toast.success("Login efetuado com sucesso")
 
       push("/post");
     } catch (err) {
-      toast.error("Erro ao acessar");
       console.log("Erro ao acessar", err);
+      toast.error("Erro ao acessar sua conta, verifique as credenciais")
     }
   };
 
@@ -68,11 +71,9 @@ const AuthProvider = ({ children }) => {
         },
       });
 
-      toast.success("Cadastrado com sucesso");
-
+      toast.success("Registro efetuado com sucesso")
       push("/login");
     } catch (err) {
-      toast.error("Erro ao cadastrar");
       console.log("Erro ao cadastrar ", err);
     }
   };
@@ -82,12 +83,13 @@ const AuthProvider = ({ children }) => {
       destroyCookie(undefined, "@nextauth.token");
       localStorage.removeItem("@nextauth.token");
       sessionStorage.removeItem("@nextauth.token");
+      push("/login");
   
       setUser(null);  
-      
-      push("/login");
+      toast.success("Deslogado com sucesso")
     } catch (error) {
       console.log("Erro ao deslogar");
+      toast.error("Erro ao deslogar")
     }
   };
 

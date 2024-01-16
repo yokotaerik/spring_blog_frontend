@@ -7,6 +7,8 @@ import api from "@/utils/api";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/AuthContext";
 import CustomBlueButton from "@/components/CustomBlueButton";
+import { toast } from 'react-toastify';
+
 
 const Post = () => {
   const [post, setPost] = useState({});
@@ -41,9 +43,11 @@ const Post = () => {
   const handleAnswer = async (postContent) => {
     try {
       await api.post(`/comment/add/${post.id}`, { content: postContent });
+      toast.success('Comentario realizado com sucesso!');
       fetchPost();
     } catch (error) {
       console.error("Erro ao adicionar comentário", error);
+      toast.error("Erro ao comentar")
     }
   };
 

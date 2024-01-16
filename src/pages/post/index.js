@@ -6,12 +6,16 @@ import PostModal from "@/components/PostModal";
 import { AuthContext } from "@/contexts/AuthContext";
 import PostDetails from "@/components/PostDetails";
 import CustomBlueButton from "@/components/CustomBlueButton";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const PostsList = () => {
   const [selectedOption, setSelectedOption] = useState("all");
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, isAuthenticated } = useContext(AuthContext);
+
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -54,6 +58,7 @@ const PostsList = () => {
 
     try {
       await api.post("/post/create", data);
+      toast.success('Post realizado com sucesso!');
       fetchPosts();
     } catch (e) {
       console.log(e);

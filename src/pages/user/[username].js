@@ -50,7 +50,7 @@ const UserPage = () => {
               onClick={() => setPage("likes")}
               selected={page === "likes"}
             >
-              Likes
+              Posts curtidos
             </MePageButton>
           </div>
         </div>
@@ -73,8 +73,8 @@ const UserPage = () => {
           </ul>
         ) : (
           <ul>
-            {userData?.likes && userData.likes.length > 0 ? (
-              userData.likes
+            {userData?.likedPosts && userData.likedPosts.length > 0 ? (
+              userData.likedPosts
                 .slice()
                 .reverse()
                 .map((post) => (

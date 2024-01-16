@@ -52,7 +52,7 @@ const PostDetails = ({ post, user, onLikeUpdated }) => {
 
   return (
     <div>
-      {post ? (
+      {post && user ? (
         <div className="p-4 bg-gray-800 shadow-md">
           <div className="flex justify-between">
           <Link href={`/user/${post.author}`}>

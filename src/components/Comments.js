@@ -5,6 +5,18 @@ import { Heart, Trash } from "react-feather";
 import ConfirmModal from "./ConfirmModal";
 
 const Comments = ({ comments, user, onLikeUpdated }) => {
+
+  if (!user) {
+    return (
+      <p className="text-gray-500">
+        Faça login para visualizar e interagir.
+      </p>
+    );
+  }
+
+
+
+
   comments = comments || [];
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 

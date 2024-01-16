@@ -64,8 +64,8 @@ const MePage = () => {
           </ul>
         ) : (
           <ul>
-            {user?.likes && user.likes.length > 0 ? (
-              user.likes
+            {user?.likedPosts && user.likedPosts.length > 0 ? (
+              user.likedPosts
                 .slice()
                 .reverse()
                 .map((post) => (

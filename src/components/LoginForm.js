@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import api from '@/utils/api';
 import Link from 'next/link';
 import CustomBlueButton from './CustomBlueButton';
 
@@ -9,7 +8,6 @@ const LoginForm = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
 
   const handleLogin = async () => {
-    console.log(credentials);
     await signIn(credentials);
   };
 
